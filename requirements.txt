@@ -2,3 +2,4 @@ streamlit
 fitz
 pillow
 stqdm
+frontend
