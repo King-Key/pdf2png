@@ -1,38 +1,55 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
 import streamlit as st
+import os 
+import fitz
+from PIL import Image
+import time
+from stqdm import stqdm
+import zipfile
+from streamlit.components.v1 import html 
 
-"""
-# Welcome to Streamlit!
-
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
-
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
-
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+output="./image/"
 
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+def save_uploaded_file(uploadedfile):
+  with open(os.path.join("./static",uploadedfile.name),"wb") as f:
+     f.write(uploadedfile.getbuffer())
+  return st.success("Saved file :{} ".format(uploadedfile.name))
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+html("<center><h1> pdf 转 png </center>")
 
-    points_per_turn = total_points / num_turns
+datafile = st.file_uploader("Upload pdf",type=['pdf'])
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+if datafile is not None:
+    file_details = {"FileName":datafile.name,"FileType":datafile.type}
+    # df  = pd.read_csv(datafile)
+    # st.dataframe(df)
+    # Apply Function here
+    save_uploaded_file(datafile)
+
+    print(datafile)
+
+
+    doc=fitz.open("./static/"+datafile.name)
+    pages=doc.page_count
+    st.write("文件页数：",pages)
+
+
+    for page in stqdm(range(pages)):
+      page1=doc.load_page(page)
+      png=page1.get_pixmap(alpha=True)
+    
+      if os.path.exists(output) == False:
+        os.mkdir(output)
+        
+
+      png.save( output +"{}.png".format(page))
+    
+    st.write("转换完成！！！")
+    st.balloons()
+
+    for i in range(fitz.open("./static/"+datafile.name).page_count):
+      image=os.path.join(output+"{}.png".format(i))
+
+      # image
+      st.image(Image.open(image))
