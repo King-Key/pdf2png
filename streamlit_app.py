@@ -4,7 +4,6 @@ import fitz
 from PIL import Image
 import time
 from stqdm import stqdm
-import zipfile
 from streamlit.components.v1 import html 
 
 output="./image/"
