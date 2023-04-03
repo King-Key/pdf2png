@@ -4,5 +4,3 @@ fitz
 pillow
 stqdm
 PyMuPDF
-frontend
-
