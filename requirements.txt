@@ -3,5 +3,6 @@ streamlit==1.20.0
 fitz
 pillow
 stqdm
+PyMuPDF
 frontend
 
