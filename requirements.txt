@@ -3,3 +3,4 @@ fitz
 pillow
 stqdm
 frontend==0.0.3
+pip==22.0.2
