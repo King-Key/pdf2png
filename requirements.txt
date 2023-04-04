@@ -5,3 +5,4 @@ pillow==9.4.0
 stqdm==0.0.5
 PyMuPDF==1.21.1
 frontend==0.0.3
+tools
