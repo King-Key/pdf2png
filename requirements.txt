@@ -1,7 +1,7 @@
 pip==22.0.2
 streamlit==1.20.0
-fitz
-pillow
-stqdm
-PyMuPDF
-frontend
+fitz==0.0.1.dev2
+pillow=9.4.0
+stqdm=0.0.5
+PyMuPDF==1.21.1
+frontend==0.0.3
